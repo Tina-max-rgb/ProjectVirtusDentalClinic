@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Database
+backend/data/*.sqlite
+backend/data/*.sqlite-*
+backend/data/*.db
+backend/data/*.db-*
+
+# Patient / lead data
+backend/data/leads.json
+src/data/leads.json
+
+# Backups
+backend/data/backups/
+data/backups/
+
+# Build
+frontend/dist/
+backend/dist/
+
+# Logs
+*.log
+npm-debug.log*

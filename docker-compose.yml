@@ -1,0 +1,55 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_PATH: /app/data/virtus.sqlite
+    volumes:
+      - virtus_db:/app/data
+    expose:
+      - "4000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_SITE_URL: ${VITE_SITE_URL:-https://virtusdentalcenter.com}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  backup:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      DATABASE_PATH: /app/data/virtus.sqlite
+    volumes:
+      - virtus_db:/app/data
+      - virtus_backups:/app/data/backups
+    entrypoint: ["/bin/sh","-c"]
+    command: ["while true; do node scripts/backup-db.js /app/data/backups/virtus-backup-$(date -u +%Y%m%d-%H%M%S).sqlite && node scripts/prune-backups.js /app/data/backups 14; sleep 86400; done"]
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  virtus_db:
+  virtus_backups:

@@ -1,0 +1,20 @@
+# Legacy SQLite files accidentally left under src/data
+backend/src/data/*.sqlite
+backend/src/data/*.sqlite-*
+node_modules/
+
+.env
+.env.*
+!.env.example
+
+backend/data/*.sqlite
+backend/data/*.sqlite-*
+backend/data/*.db
+backend/data/*.db-*
+backend/data/leads.json
+
+frontend/dist/
+backend/dist/
+
+*.log
+npm-debug.log*

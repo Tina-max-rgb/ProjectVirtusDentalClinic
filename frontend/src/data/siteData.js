@@ -1614,8 +1614,8 @@ export const i18n = {
 };
 
 export const CONTACT_INFO = {
-  phone: "+355 69 271 1166",
-  phoneHref: "+355692711166",
+  phone: "+33 6 28 27 01 18",
+  phoneHref: "+33628270118",
   email: "virtusdentalpro@gmail.com",
   whatsapp: "https://wa.me/33628270118",
   mapUrl: "https://maps.app.goo.gl/VCWRtYxdGg32ny3K6",
